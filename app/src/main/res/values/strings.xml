@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GastroGang</string>
+    <string name="register">KAYIT OL</string>
+    <string name="login">GİRİŞ YAP</string>
 </resources>
