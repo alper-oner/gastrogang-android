@@ -11,7 +11,7 @@
 
     <EditText
         android:inputType="text"
-        android:id="@+id/text1"
+        android:id="@+id/txtUsernameRegister"
         android:hint="@string/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,8 +22,8 @@
         android:background="#fff" />
 
     <EditText
-        android:inputType="text"
-        android:id="@+id/text2"
+        android:inputType="textPassword"
+        android:id="@+id/txtPasswordRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
@@ -32,7 +32,7 @@
         android:background="#fff"
         android:hint="@string/password"
         android:layout_marginTop="12dp"
-        android:layout_below="@+id/text1" />
+        android:layout_below="@+id/txtUsernameRegister" />
 
     <Button
         android:id="@+id/buttonRegister"
@@ -40,9 +40,9 @@
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:textColor="#00CC99"
-        android:layout_below="@+id/text2"
+        android:layout_below="@+id/txtPasswordRegister"
         android:layout_marginTop="17dp"
-        android:layout_alignStart="@+id/text2"
-        android:layout_alignEnd="@+id/text2" />
+        android:layout_alignStart="@+id/txtPasswordRegister"
+        android:layout_alignEnd="@+id/txtPasswordRegister" />
 
 </RelativeLayout>
