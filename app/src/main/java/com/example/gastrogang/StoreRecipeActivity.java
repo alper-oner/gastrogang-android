@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class StoreRecipeActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int pos, long id) {
+                Toast.makeText(StoreRecipeActivity.this, "Item deleted" , Toast.LENGTH_SHORT).show();
                 recipeStepList.remove(pos);
                 arrayAdapter.notifyDataSetChanged();
                 return true;
