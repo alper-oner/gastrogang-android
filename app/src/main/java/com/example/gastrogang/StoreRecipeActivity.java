@@ -53,9 +53,14 @@ public class StoreRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Add new Items to List
-                recipeStepList.add(stepText.getText().toString());
-                arrayAdapter.notifyDataSetChanged();
-                stepText.setText("");
+                if (stepText.length() > 0) {
+                    recipeStepList.add(stepText.getText().toString());
+                    arrayAdapter.notifyDataSetChanged();
+                    stepText.setText("");
+                } else {
+                    Toast.makeText(StoreRecipeActivity.this, "Steps area is empty.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -78,7 +83,7 @@ public class StoreRecipeActivity extends AppCompatActivity {
 
                 recipeName = recipeNameText.getText().toString();
                 recipeDetails = recipeDetailsText.getText().toString();
-                if (recipeName.length() <= 0 || recipeDetails.length() <= 0 || recipeStepList.size() <= 0) {
+                if (recipeName.length() <= 0 || recipeStepList.size() <= 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(StoreRecipeActivity.this);
                     builder.setCancelable(true);
                     builder.setTitle("Error");
@@ -132,7 +137,8 @@ public class StoreRecipeActivity extends AppCompatActivity {
 
 
     }
-    private void clearTextAreas(){
+
+    private void clearTextAreas() {
         final EditText recipeNameText = (EditText) findViewById(R.id.recipeName);
         final EditText recipeDetailsText = (EditText) findViewById(R.id.recipeDetails);
         final EditText stepText = (EditText) findViewById(R.id.textStep);
@@ -141,8 +147,8 @@ public class StoreRecipeActivity extends AppCompatActivity {
         stepText.setText("");
         recipeDetailsText.setText("");
         recipeStepList.clear();
-        recipeDetails="";
-        recipeName="";
+        recipeDetails = "";
+        recipeName = "";
     }
 
 }
