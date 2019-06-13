@@ -1,5 +1,6 @@
 package com.example.gastrogang;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,22 +53,52 @@ public class LoginActivity extends AppCompatActivity {
         }
         else {
 
-            //TODO: HTTP REQUEST
-
-            /*
-            if (isSuccessful) {
-                Toast.makeText(LoginActivity.this, "Başarılı bir şekilde giriş yapıldı!", Toast.LENGTH_LONG).show();
-                Intent viewIntent = new Intent(LoginActivity.this, ViewActivity.class);
-                startActivity(viewIntent);
-                finish();
+            //TODO: SET URL
+            String url = "https://enb5c8zr1ln4b.x.pipedream.net";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("username", username);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            else {
-                Toast.makeText(LoginActivity.this, "Giriş yaparken bir hata oluştu!", Toast.LENGTH_LONG).show();
+            try {
+                obj.put("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            */
 
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Toast.makeText(LoginActivity.this, "Başarılı bir şekilde giriş yapıldı!", Toast.LENGTH_LONG).show();
 
+                            ////TODO: Remove comment slash characters below after Setting server url
+                            //String token = "";
+                            //try {
+                            //    token = response.getString("token");
+                            //} catch (JSONException e) {
+                            //    e.printStackTrace();
+                            //}
+
+                            //TODO: Remove comment slash characters below after Merging viewRecipesBranch
+                            //Intent viewIntent = new Intent(LoginActivity.this, ViewActivity.class);
+                            //viewIntent.putExtra("token", token);
+                            //startActivity(viewIntent);
+                            //finish();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(LoginActivity.this, "Giriş yaparken bir hata oluştu!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+            queue.add(jsObjRequest);
         }
+
+
     }
 
     @Override
