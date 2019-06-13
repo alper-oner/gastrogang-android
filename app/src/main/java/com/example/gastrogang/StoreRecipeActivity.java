@@ -124,10 +124,25 @@ public class StoreRecipeActivity extends AppCompatActivity {
                                 }
                             });
                     queue.add(jsObjRequest);
+                    clearTextAreas();
+
                 }
             }
         });
 
 
     }
+    private void clearTextAreas(){
+        final EditText recipeNameText = (EditText) findViewById(R.id.recipeName);
+        final EditText recipeDetailsText = (EditText) findViewById(R.id.recipeDetails);
+        final EditText stepText = (EditText) findViewById(R.id.textStep);
+
+        recipeNameText.setText("");
+        stepText.setText("");
+        recipeDetailsText.setText("");
+        recipeStepList.clear();
+        recipeDetails="";
+        recipeName="";
+    }
+
 }
