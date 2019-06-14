@@ -54,10 +54,10 @@ public class LoginActivity extends AppCompatActivity {
         else {
 
             //TODO: SET URL
-            String url = "https://enb5c8zr1ln4b.x.pipedream.net";
+            String url = "http://192.168.1.75:8080/api/v1/login";
             JSONObject obj = new JSONObject();
             try {
-                obj.put("username", username);
+                obj.put("name", username);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -74,13 +74,12 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             Toast.makeText(LoginActivity.this, "Başarılı bir şekilde giriş yapıldı!", Toast.LENGTH_LONG).show();
 
-                            ////TODO: Remove comment slash characters below after Setting server url
-                            //String token = "";
-                            //try {
-                            //    token = response.getString("token");
-                            //} catch (JSONException e) {
-                            //    e.printStackTrace();
-                            //}
+                            String token = "";
+                            try {
+                                token = response.getString("token");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
                             //TODO: Remove comment slash characters below after Merging viewRecipesBranch
                             //Intent viewIntent = new Intent(LoginActivity.this, ViewActivity.class);
@@ -92,7 +91,13 @@ public class LoginActivity extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(LoginActivity.this, "Giriş yaparken bir hata oluştu!", Toast.LENGTH_LONG).show();
+                            if (error.networkResponse.statusCode == 400) {
+                                Toast.makeText(LoginActivity.this, "Yanlış kullanıcı adı veya şifre", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "Giriş yaparken bir hata oluştu!", Toast.LENGTH_LONG).show();
+                                error.printStackTrace();
+                            }
                         }
                     });
             queue.add(jsObjRequest);

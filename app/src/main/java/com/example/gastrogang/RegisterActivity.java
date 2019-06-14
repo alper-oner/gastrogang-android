@@ -51,10 +51,10 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
 
             //TODO: SET URL
-            String url = "https://enb5c8zr1ln4b.x.pipedream.net";
+            String url = "http://192.168.1.75:8080/api/v1/register";
             JSONObject obj = new JSONObject();
             try {
-                obj.put("username", username);
+                obj.put("name", username);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -78,8 +78,13 @@ public class RegisterActivity extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(RegisterActivity.this, "Kayıt olurken bir hata oluştu!", Toast.LENGTH_LONG).show();
-
+                            if (error.networkResponse.statusCode == 400) {
+                                Toast.makeText(RegisterActivity.this, "Bu kullanıcı adı önceden alınmış!", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(RegisterActivity.this, "Kayıt olurken bir hata oluştu!", Toast.LENGTH_LONG).show();
+                                error.printStackTrace();
+                            }
                         }
                     });
             queue.add(jsObjRequest);
