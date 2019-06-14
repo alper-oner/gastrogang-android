@@ -15,7 +15,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:text="CREATE NEW RECIPE"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnCreate"
@@ -34,7 +34,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
         android:text="Recipe Name: "
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/recipeName"
@@ -54,7 +54,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:text="Details:"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/recipeDetails"
@@ -64,9 +64,9 @@
         android:layout_marginStart="15dp"
         android:hint="Details..."
         android:inputType="textMultiLine"
-        android:lines="6"
-        android:maxLines="6"
-        android:minLines="3" />
+        android:lines="3"
+        android:maxLines="3"
+        android:minLines="1" />
 
     <TextView
         android:id="@+id/textIngredientsHeader"
@@ -76,7 +76,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:text="Ingredients:"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/textIngredients"
@@ -99,7 +99,7 @@
     <ListView
         android:id="@+id/listIngredients"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_below="@+id/btAddIngredients"
         android:layout_marginStart="15dp" />
 
@@ -112,7 +112,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:text="Steps:"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/textStep"
@@ -135,7 +135,7 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_below="@+id/textStep"
         android:layout_marginStart="15dp"
         />
