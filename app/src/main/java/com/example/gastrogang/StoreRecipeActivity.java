@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -143,12 +144,20 @@ public class StoreRecipeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     try {
-                        obj.put("steps", recipeStepList);
+                        JSONArray jsonArraySteps = new JSONArray();
+                        for (int i = 0; i < recipeStepList.size(); i++) {
+                            jsonArraySteps.put(recipeStepList.get(i));
+                        }
+                        obj.put("steps", jsonArraySteps);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     try {
-                        obj.put("ingredients", recipeIngredientList);
+                        JSONArray jsonArrayIngredient = new JSONArray();
+                        for (int i = 0; i < recipeIngredientList.size(); i++) {
+                            jsonArrayIngredient.put(recipeIngredientList.get(i));
+                        }
+                        obj.put("ingredients", jsonArrayIngredient);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -170,14 +179,17 @@ public class StoreRecipeActivity extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(StoreRecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                    if (error.networkResponse.statusCode == 422) {
+                                        Toast.makeText(StoreRecipeActivity.this, "Same recipe name error", Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(StoreRecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }) {
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String> params = new HashMap<String, String>();
                             String ACCESS_TOKEN = getIntent().getStringExtra("token");
-                            params.put("Content-Type", "application/json");
                             params.put("Authorization", "Bearer " + ACCESS_TOKEN);
                             return params;
                         }
@@ -187,7 +199,6 @@ public class StoreRecipeActivity extends AppCompatActivity {
                 }
             }
         });
-
 
     }
 
