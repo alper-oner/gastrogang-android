@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StoreRecipeActivity">
+
+
+
+    <TextView
+        android:id="@+id/textCreateRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:text="CREATE NEW RECIPE"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textCreateRecipe"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/textCreateRecipe"
+        android:text="Create" />
+
+    <TextView
+        android:id="@+id/textRecipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textCreateRecipe"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:text="Recipe Name: "
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/recipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textRecipeName"
+        android:layout_marginEnd="10dp"
+
+        android:layout_toRightOf="@id/textRecipeName"
+        android:hint="Pasta, Pizza..." />
+
+    <TextView
+        android:id="@+id/textDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recipeName"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="Details:"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/recipeDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textDetails"
+        android:layout_marginStart="15dp"
+        android:hint="Details..."
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="3"
+        android:minLines="1" />
+
+    <TextView
+        android:id="@+id/textIngredientsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recipeDetails"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="Ingredients:"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/textIngredients"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textIngredientsHeader"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:hint="Ingredients" />
+
+    <Button
+        android:id="@+id/btAddIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textIngredients"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/textIngredients"
+        android:text="Add" />
+
+    <ListView
+        android:id="@+id/listIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btAddIngredients"
+        android:layout_marginStart="15dp" />
+
+
+    <TextView
+        android:id="@+id/textStepHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listIngredients"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="Steps:"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/textStep"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textStepHeader"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:hint="Step" />
+
+    <Button
+        android:id="@+id/btAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textStep"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/textStep"
+        android:text="Add" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textStep"
+        android:layout_marginStart="15dp"
+        />
+
+
+</RelativeLayout>
