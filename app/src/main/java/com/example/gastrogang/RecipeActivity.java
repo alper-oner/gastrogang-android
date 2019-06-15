@@ -70,6 +70,22 @@ public class RecipeActivity extends AppCompatActivity {
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeStepsList);
         lvSteps.setAdapter(stepsAdapter);
 
+        Button editRecipe = findViewById(R.id.btnEditRecipe);
+
+        editRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recipeIntent = new Intent(RecipeActivity.this, EditRecipeActivity.class);
+                recipeIntent.putExtra("id", recipeId);
+                recipeIntent.putExtra("name", recipeName);
+                recipeIntent.putExtra("steps", recipeStepsList);
+                recipeIntent.putExtra("ingredients", recipeIngredientsList);
+                recipeIntent.putExtra("details", recipeDetails);
+                recipeIntent.putExtra("token", ACCESS_TOKEN);
+                startActivity(recipeIntent);
+            }
+        });
+
         Button deleteRecipe = findViewById(R.id.btnDeleteRecipe);
 
         deleteRecipe.setOnClickListener(new View.OnClickListener() {
