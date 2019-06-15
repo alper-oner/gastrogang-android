@@ -14,10 +14,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -25,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -189,7 +193,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Toast.makeText(EditRecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditRecipeActivity.this, "Successful", Toast.LENGTH_SHORT).show();
                                     Intent recipeIntent = new Intent(EditRecipeActivity.this, RecipeActivity.class);
                                     recipeIntent.putExtra("token", getIntent().getStringExtra("token"));
                                     recipeIntent.putExtra("name", recipeName);
@@ -197,7 +201,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                                     recipeIntent.putExtra("ingredients", recipeIngredientList);
                                     recipeIntent.putExtra("details", recipeDetails);
                                     recipeIntent.putExtra("id", getIntent().getStringExtra("id"));
-                                    clearTextAreas();
                                     startActivity(recipeIntent);
                                     finish();
                                 }
@@ -215,6 +218,20 @@ public class EditRecipeActivity extends AppCompatActivity {
                             params.put("Authorization", "Bearer " + ACCESS_TOKEN);
                             return params;
                         }
+                        @Override
+                        protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                            try {
+                                String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                                JSONObject result = null;
+                                if (jsonString.length() > 0)
+                                    result = new JSONObject(jsonString);
+                                return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                            } catch (UnsupportedEncodingException e) {
+                                return Response.error(new ParseError(e));
+                            } catch (JSONException je) {
+                                return Response.error(new ParseError(je));
+                            }
+                        }
                     };
                     queue.add(jsObjRequest);
 
@@ -222,23 +239,5 @@ public class EditRecipeActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void clearTextAreas() {
-        final EditText recipeNameText = (EditText) findViewById(R.id.recipeName);
-        final EditText recipeDetailsText = (EditText) findViewById(R.id.recipeDetails);
-        final EditText stepText = (EditText) findViewById(R.id.textStep);
-        final EditText ingredientsText = (EditText) findViewById(R.id.textIngredients);
-
-        recipeNameText.setText("");
-        stepText.setText("");
-        recipeDetailsText.setText("");
-        ingredientsText.setText("");
-
-        recipeStepList.clear();
-        recipeIngredientList.clear();
-        recipeDetails = "";
-        recipeName = "";
-    }
-
 
 }
