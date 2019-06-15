@@ -81,11 +81,10 @@ public class LoginActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            //TODO: Remove comment slash characters below after Merging viewRecipesBranch
-                            //Intent viewIntent = new Intent(LoginActivity.this, ViewActivity.class);
-                            //viewIntent.putExtra("token", token);
-                            //startActivity(viewIntent);
-                            //finish();
+                            Intent viewIntent = new Intent(LoginActivity.this, ViewActivity.class);
+                            viewIntent.putExtra("token", token);
+                            startActivity(viewIntent);
+                            finish();
                         }
                     },
                     new Response.ErrorListener() {
