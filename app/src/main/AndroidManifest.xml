@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EditRecipeActivity"></activity>
+        <activity android:name=".EditRecipeActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".StoreRecipeActivity"
             android:windowSoftInputMode="adjustPan" />
