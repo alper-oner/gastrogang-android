@@ -133,7 +133,7 @@ public class EditRecipeActivity extends AppCompatActivity {
             }
         });
 
-        // create recipe button
+        // update recipe button
         updateRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
