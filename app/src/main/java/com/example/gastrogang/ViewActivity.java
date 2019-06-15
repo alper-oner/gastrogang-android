@@ -49,14 +49,11 @@ public class ViewActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         try {
 
-                            Toast.makeText(ViewActivity.this, "Successful2: " + response.toString(), Toast.LENGTH_SHORT).show();
-                            System.out.println(response.toString());
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
 
                                 String recipeId = jsonObject.getString("id");
                                 String recipeName = jsonObject.getString("name");
-                                System.out.println(recipeName);
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");
                                 String recipeDetails = jsonObject.getString("details");
@@ -98,7 +95,6 @@ public class ViewActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
-                ACCESS_TOKEN = getIntent().getStringExtra("token");
                 params.put("Authorization", "Bearer " + ACCESS_TOKEN);
                 return params;
             }

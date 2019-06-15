@@ -10,7 +10,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecipeActivity extends AppCompatActivity {
 
@@ -31,6 +47,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            recipeId = extras.getString("id");
             ACCESS_TOKEN = extras.getString("token");
             recipeName = extras.getString("name");
             recipeDetails = extras.getString("details");
@@ -58,12 +75,57 @@ public class RecipeActivity extends AppCompatActivity {
         deleteRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: HTTP REQUEST FOR DELETE
-
-                Intent intent = new Intent(RecipeActivity.this, ViewActivity.class);
-                intent.putExtra("token", ACCESS_TOKEN);
-                startActivity(intent);
-                finish();
+                //TODO: Set server url
+                String url = "http://192.168.1.75:8080/api/v1/recipes/" + recipeId;
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.DELETE, url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Intent intent = new Intent(RecipeActivity.this, ViewActivity.class);
+                                intent.putExtra("token", ACCESS_TOKEN);
+                                startActivity(intent);
+                                finish();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse.statusCode == 403) {
+                                    Toast.makeText(RecipeActivity.this, "Error : Recipe belongs to someone else", Toast.LENGTH_LONG).show();
+                                }
+                                else if (error.networkResponse.statusCode == 404) {
+                                    Toast.makeText(RecipeActivity.this, "Error : Recipe does not exist", Toast.LENGTH_LONG).show();
+                                }
+                                else {
+                                    Toast.makeText(RecipeActivity.this, "Unexpected Error while deleting the recipe", Toast.LENGTH_LONG).show();
+                                    error.printStackTrace();
+                                }
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                        return params;
+                    }
+                    //Override parseNetworkResponse because response of the JsonObjectRequest is empty.
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                            JSONObject result = null;
+                            if (jsonString.length() > 0)
+                                result = new JSONObject(jsonString);
+                            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException je) {
+                            return Response.error(new ParseError(je));
+                        }
+                    }
+                };
+                queue.add(getRequest);
             }
         });
     }
