@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,6 +40,17 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
 
         ACCESS_TOKEN = getIntent().getStringExtra("token");
+
+        Button buttonAddRecipe = findViewById(R.id.addRecipe);
+
+        buttonAddRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recipeIntent = new Intent(ViewActivity.this, StoreRecipeActivity.class);
+                recipeIntent.putExtra("token", ACCESS_TOKEN);
+                startActivity(recipeIntent);
+            }
+        });
 
         //TODO: Set server url
         String url = "http://192.168.1.75:8080/api/v1/recipes";
