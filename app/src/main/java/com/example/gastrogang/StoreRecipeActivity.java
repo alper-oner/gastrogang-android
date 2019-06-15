@@ -1,6 +1,7 @@
 package com.example.gastrogang;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -174,6 +175,11 @@ public class StoreRecipeActivity extends AppCompatActivity {
                                 public void onResponse(JSONObject response) {
                                     Toast.makeText(StoreRecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
                                     clearTextAreas();
+                                    Intent viewIntent = new Intent(StoreRecipeActivity.this, ViewActivity.class);
+                                    String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                                    viewIntent.putExtra("token", ACCESS_TOKEN);
+                                    startActivity(viewIntent);
+                                    finish();
                                 }
                             },
                             new Response.ErrorListener() {
