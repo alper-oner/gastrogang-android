@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".RecipeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipeActivity">
 
+
+    <Button
+        android:id="@+id/btnEditRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Recipe"
+        android:background="@android:color/holo_blue_dark"
+        android:textColor="@android:color/white"
+        />
 
     <Button
         android:id="@+id/btnDeleteRecipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Delete Recipe"
+        android:layout_below="@+id/btnEditRecipe"
         android:background="@android:color/holo_red_dark"
         android:textColor="@android:color/white"
         />
@@ -20,7 +30,6 @@ tools:context=".RecipeActivity">
         android:id="@+id/txtrcp1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_below="@+id/btnDeleteRecipe"
         android:text="Recipe Name: "
         android:textSize="25sp" />
@@ -44,20 +53,30 @@ tools:context=".RecipeActivity">
 
     <TextView
         android:id="@+id/txtrcpRecipeDetails"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtrcp2"
-        android:textSize="25sp"
-        android:inputType="textMultiLine"
-        android:lines="6"
-        android:maxLines="6"
-        android:minLines="3" />
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/txtrcp3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtrcpRecipeDetails"
+        android:text="Ingredients:"
+        android:textSize="25sp" />
+
+    <ListView
+        android:id="@+id/rcpIngredientList"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_below="@+id/txtrcp3" />
+
+    <TextView
+        android:id="@+id/txtrcp4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rcpIngredientList"
         android:text="Steps:"
         android:textSize="25sp" />
 
@@ -65,7 +84,7 @@ tools:context=".RecipeActivity">
         android:id="@+id/rcpSteplist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtrcp3" />
+        android:layout_below="@+id/txtrcp4" />
 
 
 
