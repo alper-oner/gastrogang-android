@@ -60,12 +60,12 @@ public class RecipeActivity extends AppCompatActivity {
         txtviewRecipeName.setText(recipeName);
         txtviewRecipeDetails.setText(recipeDetails);
 
-        ListView lvIngredients = findViewById(R.id.rcpSteplist);
+        ListView lvIngredients = findViewById(R.id.rcpIngredientList);
         ArrayAdapter<String> ingredientsAdapter = new ArrayAdapter<String>
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeIngredientsList);
         lvIngredients.setAdapter(ingredientsAdapter);
 
-        ListView lvSteps = findViewById(R.id.rcpIngredientList);
+        ListView lvSteps = findViewById(R.id.rcpSteplist);
         ArrayAdapter<String> stepsAdapter = new ArrayAdapter<String>
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeStepsList);
         lvSteps.setAdapter(stepsAdapter);
