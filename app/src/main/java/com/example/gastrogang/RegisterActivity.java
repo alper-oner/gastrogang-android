@@ -29,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void init() {
         actionbarRegister = (Toolbar) findViewById(R.id.actionbarRegister);
         setSupportActionBar(actionbarRegister);
-        getSupportActionBar().setTitle("KAYIT OL");
+        getSupportActionBar().setTitle("SIGN UP");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         txtUsername = (EditText) findViewById(R.id.txtUsernameRegister);
@@ -42,12 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
         String password = txtPassword.getText().toString();
 
         if (TextUtils.isEmpty(username)) {
-           Toast.makeText(this, "Kullanıcı Adı boş olamaz!", Toast.LENGTH_LONG).show();
+           Toast.makeText(this, "Username cannot be empty!", Toast.LENGTH_LONG).show();
 
         } else if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Şifre boş olamaz!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Password cannot be empty!", Toast.LENGTH_LONG).show();
         } else if (password.length() < 6) {
-            Toast.makeText(this, "Şifre en az 6 karakterli olmalı!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Password should be at least 6 chars long!", Toast.LENGTH_LONG).show();
         } else {
 
             //TODO: SET URL
@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(RegisterActivity.this, "Hesap başarılı bir şekilde oluşturuldu!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "Account has been successfully created!", Toast.LENGTH_LONG).show();
                             Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(loginIntent);
                             finish();
@@ -79,10 +79,10 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (error.networkResponse.statusCode == 400) {
-                                Toast.makeText(RegisterActivity.this, "Bu kullanıcı adı önceden alınmış!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegisterActivity.this, "This username has already been taken!", Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(RegisterActivity.this, "Kayıt olurken bir hata oluştu!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegisterActivity.this, "An error occurred while registering!", Toast.LENGTH_LONG).show();
                                 error.printStackTrace();
                             }
                         }

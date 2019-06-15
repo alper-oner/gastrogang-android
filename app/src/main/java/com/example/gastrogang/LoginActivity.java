@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     public void init() {
         actionbarLogin = findViewById(R.id.actionbarLogin);
         setSupportActionBar(actionbarLogin);
-        getSupportActionBar().setTitle("GİRİŞ YAP");
+        getSupportActionBar().setTitle("LOGIN");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         txtUsername = (EditText) findViewById(R.id.txtUsernameLogin);
@@ -45,11 +45,11 @@ public class LoginActivity extends AppCompatActivity {
         String password = txtPassword.getText().toString();
 
         if (TextUtils.isEmpty(username)) {
-            Toast.makeText(this, "Kullanıcı Adı giriniz!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Enter a username!", Toast.LENGTH_LONG).show();
 
         }
         else if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Şifre giriniz!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Enter a password!", Toast.LENGTH_LONG).show();
         }
         else {
 
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(LoginActivity.this, "Başarılı bir şekilde giriş yapıldı!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Successfully logged in!", Toast.LENGTH_LONG).show();
 
                             String token = "";
                             try {
@@ -91,10 +91,10 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (error.networkResponse.statusCode == 400) {
-                                Toast.makeText(LoginActivity.this, "Yanlış kullanıcı adı veya şifre", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(LoginActivity.this, "Giriş yaparken bir hata oluştu!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "An error occurred while logging in!", Toast.LENGTH_LONG).show();
                                 error.printStackTrace();
                             }
                         }
