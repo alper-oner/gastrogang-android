@@ -34,7 +34,7 @@ public class StoreRecipeActivity extends AppCompatActivity {
     ArrayList recipeIngredientList = new ArrayList<String>();
     String recipeName = new String();
     String recipeDetails = new String();
-    String url = "http://192.168.1.24:8080/api/v1/recipes"; // TODO add correct url
+    String url = "https://gastrogang.herokuapp.com/api/v1/recipes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

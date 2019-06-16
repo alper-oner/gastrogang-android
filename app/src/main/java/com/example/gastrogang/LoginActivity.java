@@ -52,9 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Enter a password!", Toast.LENGTH_LONG).show();
         }
         else {
-
-            //TODO: SET URL
-            String url = "http://192.168.1.75:8080/api/v1/login";
+            String url = "https://gastrogang.herokuapp.com/api/v1/login";
             JSONObject obj = new JSONObject();
             try {
                 obj.put("name", username);

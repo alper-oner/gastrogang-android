@@ -187,7 +187,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     String ID = getIntent().getStringExtra("id");
-                    String url = "http://192.168.1.24:8080/api/v1/recipes/" + ID; // TODO add correct url
+                    String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + ID;
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                     JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.PUT, url, obj,
                             new Response.Listener<JSONObject>() {

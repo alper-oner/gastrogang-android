@@ -52,8 +52,7 @@ public class ViewActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: Set server url
-        String url = "http://192.168.1.75:8080/api/v1/recipes";
+        String url = "https://gastrogang.herokuapp.com/api/v1/recipes";
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -64,7 +63,7 @@ public class ViewActivity extends AppCompatActivity {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
 
-                                String recipeId = jsonObject.getString("id");
+                                String recipeId = jsonObject.getString("ID");
                                 String recipeName = jsonObject.getString("name");
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");

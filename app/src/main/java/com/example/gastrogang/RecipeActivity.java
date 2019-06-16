@@ -91,8 +91,7 @@ public class RecipeActivity extends AppCompatActivity {
         deleteRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Set server url
-                String url = "http://192.168.1.75:8080/api/v1/recipes/" + recipeId;
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId;
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.DELETE, url, null,
                         new Response.Listener<JSONObject>() {

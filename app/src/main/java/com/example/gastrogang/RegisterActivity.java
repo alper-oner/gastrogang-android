@@ -49,9 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (password.length() < 6) {
             Toast.makeText(this, "Password should be at least 6 chars long!", Toast.LENGTH_LONG).show();
         } else {
-
-            //TODO: SET URL
-            String url = "http://192.168.1.75:8080/api/v1/register";
+            String url = "https://gastrogang.herokuapp.com/api/v1/register";
             JSONObject obj = new JSONObject();
             try {
                 obj.put("name", username);
