@@ -1,14 +1,17 @@
 package com.example.gastrogang;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -71,6 +74,12 @@ public class RecipeActivity extends AppCompatActivity {
         lvSteps.setAdapter(stepsAdapter);
 
         Button editRecipe = findViewById(R.id.btnEditRecipe);
+
+        ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleButton.setChecked(false);
+
+        final Button copyUrl = findViewById(R.id.copyUrlButton);
+        copyUrl.setVisibility(View.GONE);
 
         editRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,5 +152,40 @@ public class RecipeActivity extends AppCompatActivity {
                 queue.add(getRequest);
             }
         });
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    // TODO public/private post at
+                    // if toggle button is enabled/on
+                    copyUrl.setVisibility(View.VISIBLE);
+
+                    // Make a toast to display toggle button status
+                    Toast.makeText(getApplicationContext(),
+                            "Recipe is public", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    // TODO public/private post at
+                    // If toggle button is disabled/off
+                    copyUrl.setVisibility(View.GONE);
+
+                    // Make a toast to display toggle button status
+                    Toast.makeText(getApplicationContext(),
+                            "Recipe is private", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        copyUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),
+                        "URL copied", Toast.LENGTH_SHORT).show();
+                // TODO get URL
+            }
+        });
+
+
     }
 }
