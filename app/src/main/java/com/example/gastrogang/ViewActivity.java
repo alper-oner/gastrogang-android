@@ -1,13 +1,14 @@
 package com.example.gastrogang;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,6 +34,7 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayList<ArrayList<String>> recipeIngredientsListList = new ArrayList<>();
     private ArrayList<ArrayList<String>> recipeStepsListList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
+    private ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,24 @@ public class ViewActivity extends AppCompatActivity {
         ACCESS_TOKEN = getIntent().getStringExtra("token");
 
         Button buttonAddRecipe = findViewById(R.id.addRecipe);
+
+        SearchView search = findViewById(R.id.searchView);
+        search.setActivated(true);
+        search.setQueryHint("Search...");
+        search.onActionViewExpanded();
+        search.setIconified(false);
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
         buttonAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +135,7 @@ public class ViewActivity extends AppCompatActivity {
 
     private void initRecipeListView() {
 
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.recipelistitem, R.id.btnRecipe, recipeNamesList);
+        adapter = new ArrayAdapter<>(this, R.layout.recipelistitem, R.id.btnRecipe, recipeNamesList);
         ListView listView = (ListView) findViewById(R.id.recipe_list);
         listView.setAdapter(adapter);
 
