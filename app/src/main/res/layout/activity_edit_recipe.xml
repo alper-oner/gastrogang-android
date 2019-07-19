@@ -101,7 +101,7 @@
             android:layout_toRightOf="@+id/editTextIngredients"
             android:text="Add" />
 
-        <ListView
+        <com.example.gastrogang.NonScrollListView
             android:id="@+id/editListIngredients"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -137,7 +137,7 @@
             android:layout_toEndOf="@+id/editTextStep"
             android:text="Add" />
 
-        <ListView
+        <com.example.gastrogang.NonScrollListView
             android:id="@+id/editListSteps"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
