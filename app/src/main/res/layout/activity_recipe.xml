@@ -1,91 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecipeActivity">
+    android:fillViewport="true">
 
-
-    <Button
-        android:id="@+id/btnEditRecipe"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Recipe"
-        android:background="@android:color/holo_blue_dark"
-        android:textColor="@android:color/white"
-        />
+        tools:context=".RecipeActivity" >
 
-    <Button
-        android:id="@+id/btnDeleteRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete Recipe"
-        android:layout_below="@+id/btnEditRecipe"
-        android:background="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"
-        />
 
-    <TextView
-        android:id="@+id/txtrcp1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnDeleteRecipe"
-        android:text="Recipe Name: "
-        android:textSize="25sp" />
 
-    <TextView
-        android:id="@+id/txtrcpRecipeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="25sp"
-        android:layout_alignBaseline="@id/txtrcp1"
-        android:layout_toRightOf="@id/txtrcp1"/>
+        <Button
+            android:id="@+id/btnEditRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Recipe"
+            android:background="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
+            />
 
-    <TextView
-        android:id="@+id/txtrcp2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtrcpRecipeName"
-        android:text="Details:"
-        android:textSize="25sp" />
+        <Button
+            android:id="@+id/btnDeleteRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Recipe"
+            android:layout_below="@+id/btnEditRecipe"
+            android:background="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            />
 
-    <TextView
-        android:id="@+id/txtrcpRecipeDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtrcp2"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/txtrcp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnDeleteRecipe"
+            android:text="Recipe Name: "
+            android:textSize="25sp" />
 
-    <TextView
-        android:id="@+id/txtrcp3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtrcpRecipeDetails"
-        android:text="Ingredients:"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/txtrcpRecipeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="25sp"
+            android:layout_alignBaseline="@id/txtrcp1"
+            android:layout_toRightOf="@id/txtrcp1"/>
 
-    <ListView
+        <TextView
+            android:id="@+id/txtrcp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcpRecipeName"
+            android:text="Details:"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/txtrcpRecipeDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtrcp2"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/txtrcp3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcpRecipeDetails"
+            android:text="Ingredients:"
+            android:textSize="25sp" />
+
+        <com.example.gastrogang.NonScrollListView
+
         android:id="@+id/rcpIngredientList"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_below="@+id/txtrcp3" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcp3" />
 
-    <TextView
-        android:id="@+id/txtrcp4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rcpIngredientList"
-        android:text="Steps:"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/txtrcp4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rcpIngredientList"
+            android:text="Steps:"
+            android:textSize="25sp" />
 
-    <ListView
+        <com.example.gastrogang.NonScrollListView
+
         android:id="@+id/rcpSteplist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtrcp4" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcp4" />
+
+    </RelativeLayout>
 
 
 
-</RelativeLayout>
+</ScrollView>
