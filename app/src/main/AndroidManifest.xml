@@ -16,9 +16,11 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".EditRecipeActivity"
+            android:parentActivityName=".RecipeActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".StoreRecipeActivity"
+            android:parentActivityName=".ViewActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -28,8 +30,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ViewActivity"></activity>
-        <activity android:name=".RecipeActivity"></activity>
+        <activity android:name=".ViewActivity" android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".RecipeActivity" android:parentActivityName=".ViewActivity"></activity>
         <activity android:name=".LoginActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".RegisterActivity" android:parentActivityName=".MainActivity"></activity>
 

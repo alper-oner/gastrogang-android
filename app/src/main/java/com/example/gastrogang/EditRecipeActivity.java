@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -45,6 +46,25 @@ public class EditRecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
+
+        Toolbar actionbarLogin = findViewById(R.id.actionbarLogin);
+        setSupportActionBar(actionbarLogin);
+        getSupportActionBar().setTitle("EDIT RECIPE");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recipeIntent = new Intent(EditRecipeActivity.this, RecipeActivity.class);
+                recipeIntent.putExtra("token", getIntent().getStringExtra("token"));
+                recipeIntent.putExtra("name", recipeName);
+                recipeIntent.putExtra("steps", recipeStepList);
+                recipeIntent.putExtra("ingredients", recipeIngredientList);
+                recipeIntent.putExtra("details", recipeDetails);
+                recipeIntent.putExtra("id", getIntent().getStringExtra("id"));
+                recipeIntent.putExtra("tags", recipeTagList);
+                startActivity(recipeIntent);
+                finish();}
+        });
 
         ListView stepLv = (ListView) findViewById(R.id.editListSteps);
         ListView ingredientsLv = (ListView) findViewById(R.id.editListIngredients);

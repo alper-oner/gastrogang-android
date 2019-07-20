@@ -12,30 +12,25 @@
         android:layout_height="wrap_content"
         tools:context=".EditRecipeActivity">
 
+        <include layout="@layout/actionbar_app"
+            android:id="@+id/actionbarLogin" />
 
-        <TextView
-            android:id="@+id/editTextEditRecipe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:text="EDIT RECIPE"
-            android:textSize="20sp" />
 
         <Button
             android:id="@+id/editBtnUpdate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/editTextEditRecipe"
+            android:layout_alignBaseline="@id/actionbarLogin"
             android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/editTextEditRecipe"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/actionbarLogin"
             android:text="Update" />
 
         <TextView
             android:id="@+id/editTextRecipeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextEditRecipe"
+            android:layout_below="@+id/editBtnUpdate"
             android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             android:text="Recipe Name: "
