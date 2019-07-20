@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditRecipeActivity extends AppCompatActivity {
@@ -38,6 +39,7 @@ public class EditRecipeActivity extends AppCompatActivity {
     ArrayList recipeIngredientList = new ArrayList<String>();
     String recipeName = new String();
     String recipeDetails = new String();
+    ArrayList recipeTagList = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,14 @@ public class EditRecipeActivity extends AppCompatActivity {
         Button addStepBtn = (Button) findViewById(R.id.editBtAdd);
         Button updateRecipeBtn = (Button) findViewById(R.id.editBtnUpdate);
         Button addIngredientsBtn = (Button) findViewById(R.id.editBtAddIngredients);
+        ListView tagLv = (ListView) findViewById(R.id.editListTags);
+        Button addTagBtn = (Button) findViewById(R.id.editBtAddTags);
 
         final EditText recipeNameText = (EditText) findViewById(R.id.editRecipeName);
         final EditText recipeDetailsText = (EditText) findViewById(R.id.editRecipeDetails);
         final EditText stepText = (EditText) findViewById(R.id.editTextStep);
         final EditText ingredientsText = (EditText) findViewById(R.id.editTextIngredients);
+        final EditText tagsText = findViewById(R.id.editTextTag);
 
         // Create an ArrayAdapter from List
         final ArrayAdapter<String> stepListAdapter = new ArrayAdapter<String>
@@ -62,8 +67,12 @@ public class EditRecipeActivity extends AppCompatActivity {
         final ArrayAdapter<String> ingredientListAdapter = new ArrayAdapter<String>
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeIngredientList);
 
+        final ArrayAdapter<String> tagListAdapter = new ArrayAdapter<String>
+                (getApplicationContext(), android.R.layout.simple_list_item_1, recipeTagList);
+
         stepLv.setAdapter(stepListAdapter);
         ingredientsLv.setAdapter(ingredientListAdapter);
+        tagLv.setAdapter(tagListAdapter);
 
         //get old values
         recipeName = getIntent().getStringExtra("name");
@@ -73,14 +82,17 @@ public class EditRecipeActivity extends AppCompatActivity {
         ArrayList tempRecipeStepList = new ArrayList<String>();
         tempRecipeIngredientList = getIntent().getStringArrayListExtra("ingredients");
         tempRecipeStepList = getIntent().getStringArrayListExtra("steps");
+        ArrayList tempRecipeTagList = getIntent().getStringArrayListExtra("tags");
 
         recipeIngredientList.addAll(tempRecipeIngredientList);
         recipeStepList.addAll(tempRecipeStepList);
+        recipeTagList.addAll(tempRecipeTagList);
 
         recipeNameText.setText(recipeName);
         recipeDetailsText.setText(recipeDetails);
         stepListAdapter.notifyDataSetChanged();
         ingredientListAdapter.notifyDataSetChanged();
+        tagListAdapter.notifyDataSetChanged();
 
 
         // add step button
@@ -138,6 +150,34 @@ public class EditRecipeActivity extends AppCompatActivity {
             }
         });
 
+        // add tags button
+        addTagBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add new Items to List
+                if (tagsText.length() > 0) {
+                    recipeTagList.add(tagsText.getText().toString());
+                    tagListAdapter.notifyDataSetChanged();
+                    tagsText.setText("");
+                } else {
+                    Toast.makeText(EditRecipeActivity.this, "Tags area is empty.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        //delete tags list item
+        tagLv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                Toast.makeText(EditRecipeActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+                recipeTagList.remove(pos);
+                tagListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
         // update recipe button
         updateRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +226,15 @@ public class EditRecipeActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    try {
+                        JSONArray jsonArrayTag = new JSONArray();
+                        for (int i = 0; i < recipeTagList.size(); i++) {
+                            jsonArrayTag.put(recipeTagList.get(i));
+                        }
+                        obj.put("tags", jsonArrayTag);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     String ID = getIntent().getStringExtra("id");
                     String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + ID;
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -201,6 +250,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                                     recipeIntent.putExtra("ingredients", recipeIngredientList);
                                     recipeIntent.putExtra("details", recipeDetails);
                                     recipeIntent.putExtra("id", getIntent().getStringExtra("id"));
+                                    recipeIntent.putExtra("tags", recipeTagList);
                                     startActivity(recipeIntent);
                                     finish();
                                 }

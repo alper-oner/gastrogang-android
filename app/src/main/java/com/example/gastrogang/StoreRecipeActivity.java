@@ -34,6 +34,7 @@ public class StoreRecipeActivity extends AppCompatActivity {
     ArrayList recipeIngredientList = new ArrayList<String>();
     String recipeName = new String();
     String recipeDetails = new String();
+    ArrayList recipeTagList = new ArrayList<String>();
     String url = "https://gastrogang.herokuapp.com/api/v1/recipes";
 
     @Override
@@ -46,11 +47,14 @@ public class StoreRecipeActivity extends AppCompatActivity {
         Button addStepBtn = (Button) findViewById(R.id.btAdd);
         Button createRecipeBtn = (Button) findViewById(R.id.btnCreate);
         Button addIngredientsBtn = (Button) findViewById(R.id.btAddIngredients);
+        ListView tagLv = (ListView) findViewById(R.id.listTags);
+        Button addTagBtn = (Button) findViewById(R.id.btAddTag);
 
         final EditText recipeNameText = (EditText) findViewById(R.id.recipeName);
         final EditText recipeDetailsText = (EditText) findViewById(R.id.recipeDetails);
         final EditText stepText = (EditText) findViewById(R.id.textStep);
         final EditText ingredientsText = (EditText) findViewById(R.id.textIngredients);
+        final EditText tagsText = (EditText) findViewById(R.id.textTag);
 
         // Create an ArrayAdapter from List
         final ArrayAdapter<String> stepListAdapter = new ArrayAdapter<String>
@@ -59,8 +63,12 @@ public class StoreRecipeActivity extends AppCompatActivity {
         final ArrayAdapter<String> ingredientListAdapter = new ArrayAdapter<String>
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeIngredientList);
 
+        final ArrayAdapter<String> tagListAdapter = new ArrayAdapter<String>
+                (getApplicationContext(), android.R.layout.simple_list_item_1, recipeTagList);
+
         stepLv.setAdapter(stepListAdapter);
         ingredientsLv.setAdapter(ingredientListAdapter);
+        tagLv.setAdapter(tagListAdapter);
 
 
         // add step button
@@ -108,13 +116,41 @@ public class StoreRecipeActivity extends AppCompatActivity {
         });
 
         //delete ingredients list item
-        ingredientsLv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        tagLv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int pos, long id) {
                 Toast.makeText(StoreRecipeActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
                 recipeIngredientList.remove(pos);
                 ingredientListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+        // add tags button
+        addTagBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add new Items to List
+                if (tagsText.length() > 0) {
+                    recipeTagList.add(tagsText.getText().toString());
+                    tagListAdapter.notifyDataSetChanged();
+                    tagsText.setText("");
+                } else {
+                    Toast.makeText(StoreRecipeActivity.this, "Tags area is empty.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        //delete tags list item
+        tagLv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                Toast.makeText(StoreRecipeActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+                recipeTagList.remove(pos);
+                tagListAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -167,6 +203,15 @@ public class StoreRecipeActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    try {
+                        JSONArray jsonArrayTags = new JSONArray();
+                        for (int i = 0; i < recipeTagList.size(); i++) {
+                            jsonArrayTags.put(recipeTagList.get(i));
+                        }
+                        obj.put("tags", jsonArrayTags);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                     JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
@@ -213,16 +258,19 @@ public class StoreRecipeActivity extends AppCompatActivity {
         final EditText recipeDetailsText = (EditText) findViewById(R.id.recipeDetails);
         final EditText stepText = (EditText) findViewById(R.id.textStep);
         final EditText ingredientsText = (EditText) findViewById(R.id.textIngredients);
+        final EditText tagsText = (EditText) findViewById(R.id.textTag);
 
         recipeNameText.setText("");
         stepText.setText("");
         recipeDetailsText.setText("");
         ingredientsText.setText("");
+        tagsText.setText("");
 
         recipeStepList.clear();
         recipeIngredientList.clear();
         recipeDetails = "";
         recipeName = "";
+        recipeTagList.clear();
     }
 
 }
