@@ -33,8 +33,9 @@ public class RecipeActivity extends AppCompatActivity {
     private String recipeId = "";
     private String recipeName = "";
     private String recipeDetails = "";
-    private ArrayList<String> recipeIngredientsList = null;
-    private ArrayList<String> recipeStepsList = null;
+    private ArrayList<String> recipeIngredientsList = new ArrayList<>();
+    private ArrayList<String> recipeStepsList = new ArrayList<>();
+    private ArrayList<String> recipeTagsList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
 
     @Override
@@ -53,6 +54,7 @@ public class RecipeActivity extends AppCompatActivity {
             recipeDetails = extras.getString("details");
             recipeIngredientsList = extras.getStringArrayList("ingredients");
             recipeStepsList = extras.getStringArrayList("steps");
+            recipeTagsList = extras.getStringArrayList("tags");
         }
         else {
             Toast.makeText(RecipeActivity.this, "Unexpected Error" , Toast.LENGTH_LONG).show();
@@ -70,6 +72,11 @@ public class RecipeActivity extends AppCompatActivity {
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeStepsList);
         lvSteps.setAdapter(stepsAdapter);
 
+        ListView lvTags = findViewById(R.id.rcpTagList);
+        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>
+                (getApplicationContext(), android.R.layout.simple_list_item_1, recipeTagsList);
+        lvTags.setAdapter(tagsAdapter);
+
         Button editRecipe = findViewById(R.id.btnEditRecipe);
 
         editRecipe.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +89,7 @@ public class RecipeActivity extends AppCompatActivity {
                 recipeIntent.putExtra("ingredients", recipeIngredientsList);
                 recipeIntent.putExtra("details", recipeDetails);
                 recipeIntent.putExtra("token", ACCESS_TOKEN);
+                recipeIntent.putExtra("tags", recipeTagsList);
                 startActivity(recipeIntent);
             }
         });

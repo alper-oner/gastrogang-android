@@ -162,7 +162,7 @@
             android:layout_below="@+id/textTagHeader"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
-            android:hint="Step" />
+            android:hint="Tag" />
 
         <Button
             android:id="@+id/btAddTag"

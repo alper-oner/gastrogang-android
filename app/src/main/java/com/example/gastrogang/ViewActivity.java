@@ -32,6 +32,7 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayList<String> recipeDetailsList = new ArrayList<>();
     private ArrayList<ArrayList<String>> recipeIngredientsListList = new ArrayList<>();
     private ArrayList<ArrayList<String>> recipeStepsListList = new ArrayList<>();
+    private ArrayList<ArrayList<String>> recipeTagsListList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
 
     @Override
@@ -68,6 +69,8 @@ public class ViewActivity extends AppCompatActivity {
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");
                                 String recipeDetails = jsonObject.getString("details");
+                                //TODO: Edit tag header if necessary
+                                JSONArray recipeTags = jsonObject.getJSONArray("tag");
 
                                 recipeIdsList.add(recipeId);
                                 recipeNamesList.add(recipeName);
@@ -85,6 +88,12 @@ public class ViewActivity extends AppCompatActivity {
                                 recipeIngredientsListList.add(recipeIngredientsList);
 
                                 recipeDetailsList.add(recipeDetails);
+
+                                ArrayList<String> recipeTagsList = new ArrayList<>();
+                                for (int j = 0; j < recipeTags.length(); j++) {
+                                    recipeTagsList.add(recipeTags.get(j).toString());
+                                }
+                                recipeTagsListList.add(recipeTagsList);
 
                                 initRecipeListView();
                             }
@@ -130,6 +139,7 @@ public class ViewActivity extends AppCompatActivity {
             recipeIntent.putExtra("steps", recipeStepsListList.get(i));
             recipeIntent.putExtra("ingredients", recipeIngredientsListList.get(i));
             recipeIntent.putExtra("details", recipeDetailsList.get(i));
+            recipeIntent.putExtra("tags", recipeTagsListList.get(i));
             recipeIntent.putExtra("token", ACCESS_TOKEN);
             startActivity(recipeIntent);
         }

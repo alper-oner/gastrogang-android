@@ -90,10 +90,25 @@
 
         <com.example.gastrogang.NonScrollListView
 
-        android:id="@+id/rcpSteplist"
+            android:id="@+id/rcpSteplist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtrcp4" />
+
+        <TextView
+            android:id="@+id/txtrcp5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rcpSteplist"
+            android:text="Tags:"
+            android:textSize="25sp" />
+
+        <com.example.gastrogang.NonScrollListView
+
+            android:id="@+id/rcpTagList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcp5" />
 
     </RelativeLayout>
 
