@@ -1,9 +1,8 @@
 package com.example.gastrogang;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -20,9 +20,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,9 +58,8 @@ public class RecipeActivity extends AppCompatActivity {
             recipeDetails = extras.getString("details");
             recipeIngredientsList = extras.getStringArrayList("ingredients");
             recipeStepsList = extras.getStringArrayList("steps");
-        }
-        else {
-            Toast.makeText(RecipeActivity.this, "Unexpected Error" , Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(RecipeActivity.this, "Unexpected Error", Toast.LENGTH_LONG).show();
         }
         txtviewRecipeName.setText(recipeName);
         txtviewRecipeDetails.setText(recipeDetails);
@@ -117,11 +118,9 @@ public class RecipeActivity extends AppCompatActivity {
                             public void onErrorResponse(VolleyError error) {
                                 if (error.networkResponse.statusCode == 403) {
                                     Toast.makeText(RecipeActivity.this, "Error : Recipe belongs to someone else", Toast.LENGTH_LONG).show();
-                                }
-                                else if (error.networkResponse.statusCode == 404) {
+                                } else if (error.networkResponse.statusCode == 404) {
                                     Toast.makeText(RecipeActivity.this, "Error : Recipe does not exist", Toast.LENGTH_LONG).show();
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(RecipeActivity.this, "Unexpected Error while deleting the recipe", Toast.LENGTH_LONG).show();
                                     error.printStackTrace();
                                 }
@@ -133,6 +132,7 @@ public class RecipeActivity extends AppCompatActivity {
                         params.put("Authorization", "Bearer " + ACCESS_TOKEN);
                         return params;
                     }
+
                     //Override parseNetworkResponse because response of the JsonObjectRequest is empty.
                     @Override
                     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
@@ -156,17 +156,68 @@ public class RecipeActivity extends AppCompatActivity {
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     // TODO public/private post at
+                    String url = " https://webhook.site/ab98b14e-a11c-4b76-a53e-fe2c20f163ab ";
+                    JSONObject obj = new JSONObject();
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(RecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(RecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                            params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                            return params;
+                        }
+                    };
+                    queue.add(jsObjRequest);
+
+
                     // if toggle button is enabled/on
                     copyUrl.setVisibility(View.VISIBLE);
 
                     // Make a toast to display toggle button status
                     Toast.makeText(getApplicationContext(),
                             "Recipe is public", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     // TODO public/private post at
+                    String url = "https://webhook.site/ab98b14e-a11c-4b76-a53e-fe2c20f163ab ";
+                    JSONObject obj = new JSONObject();
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(RecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(RecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                            params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                            return params;
+                        }
+                    };
+                    queue.add(jsObjRequest);
                     // If toggle button is disabled/off
                     copyUrl.setVisibility(View.GONE);
 
@@ -183,6 +234,36 @@ public class RecipeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "URL copied", Toast.LENGTH_SHORT).show();
                 // TODO get URL
+                String url = "https://api.myjson.com/bins/wf259";
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    String copiedUrl = response.getString("url");
+                                    Toast.makeText(getApplicationContext(),
+                                            "URL: " + copiedUrl, Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(RecipeActivity.this, "Error while getting URL" + error, Toast.LENGTH_LONG).show();
+                                error.printStackTrace();
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                        return params;
+                    }
+                };
+                queue.add(getRequest);
             }
         });
 
