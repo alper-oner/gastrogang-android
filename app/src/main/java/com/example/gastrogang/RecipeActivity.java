@@ -3,6 +3,7 @@ package com.example.gastrogang;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,6 +43,19 @@ public class RecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        Toolbar actionbarLogin = findViewById(R.id.actionbarLogin);
+        setSupportActionBar(actionbarLogin);
+        getSupportActionBar().setTitle("RECIPE");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recipeIntent = new Intent(RecipeActivity.this, ViewActivity.class);
+                recipeIntent.putExtra("token", getIntent().getStringExtra("token"));
+                startActivity(recipeIntent);
+                finish();}
+        });
 
         TextView txtviewRecipeName = findViewById(R.id.txtrcpRecipeName);
         TextView txtviewRecipeDetails = findViewById(R.id.txtrcpRecipeDetails);

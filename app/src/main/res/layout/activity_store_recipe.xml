@@ -12,30 +12,23 @@
         android:layout_height="wrap_content"
         tools:context=".StoreRecipeActivity">
 
-
-        <TextView
-            android:id="@+id/textCreateRecipe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:text="CREATE NEW RECIPE"
-            android:textSize="20sp" />
+        <include layout="@layout/actionbar_app"
+            android:id="@+id/actionbarLogin" />
 
         <Button
             android:id="@+id/btnCreate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/textCreateRecipe"
+            android:layout_below="@id/actionbarLogin"
             android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/textCreateRecipe"
+            android:layout_marginRight="30dp"
             android:text="Create" />
 
         <TextView
             android:id="@+id/textRecipeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textCreateRecipe"
+            android:layout_below="@+id/btnCreate"
             android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             android:text="Recipe Name: "
