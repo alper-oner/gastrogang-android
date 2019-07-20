@@ -69,8 +69,7 @@ public class ViewActivity extends AppCompatActivity {
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");
                                 String recipeDetails = jsonObject.getString("details");
-                                //TODO: Edit tag header if necessary
-                                JSONArray recipeTags = jsonObject.getJSONArray("tag");
+                                JSONArray recipeTags = jsonObject.getJSONArray("tags");
 
                                 recipeIdsList.add(recipeId);
                                 recipeNamesList.add(recipeName);

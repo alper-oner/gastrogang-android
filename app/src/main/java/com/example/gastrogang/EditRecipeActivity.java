@@ -231,7 +231,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                         for (int i = 0; i < recipeTagList.size(); i++) {
                             jsonArrayTag.put(recipeTagList.get(i));
                         }
-                        //TODO: Edit tag header if necessary
                         obj.put("tags", jsonArrayTag);
                     } catch (JSONException e) {
                         e.printStackTrace();

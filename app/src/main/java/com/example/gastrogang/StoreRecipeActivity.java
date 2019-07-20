@@ -144,7 +144,7 @@ public class StoreRecipeActivity extends AppCompatActivity {
         });
 
         //delete tags list item
-        ingredientsLv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        tagLv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int pos, long id) {
@@ -208,7 +208,6 @@ public class StoreRecipeActivity extends AppCompatActivity {
                         for (int i = 0; i < recipeTagList.size(); i++) {
                             jsonArrayTags.put(recipeTagList.get(i));
                         }
-                        //TODO: Edit tag header if necessary
                         obj.put("tags", jsonArrayTags);
                     } catch (JSONException e) {
                         e.printStackTrace();
