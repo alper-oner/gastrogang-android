@@ -1,16 +1,22 @@
 package com.example.gastrogang;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -18,9 +24,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,6 +80,7 @@ public class RecipeActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(RecipeActivity.this, "Unexpected Error" , Toast.LENGTH_LONG).show();
+
         }
         txtviewRecipeName.setText(recipeName);
         txtviewRecipeDetails.setText(recipeDetails);
@@ -92,6 +101,12 @@ public class RecipeActivity extends AppCompatActivity {
         lvTags.setAdapter(tagsAdapter);
 
         Button editRecipe = findViewById(R.id.btnEditRecipe);
+
+        ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleButton.setChecked(false);
+
+        final Button copyUrl = findViewById(R.id.copyUrlButton);
+        copyUrl.setVisibility(View.GONE);
 
         editRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,11 +145,9 @@ public class RecipeActivity extends AppCompatActivity {
                             public void onErrorResponse(VolleyError error) {
                                 if (error.networkResponse.statusCode == 403) {
                                     Toast.makeText(RecipeActivity.this, "Error : Recipe belongs to someone else", Toast.LENGTH_LONG).show();
-                                }
-                                else if (error.networkResponse.statusCode == 404) {
+                                } else if (error.networkResponse.statusCode == 404) {
                                     Toast.makeText(RecipeActivity.this, "Error : Recipe does not exist", Toast.LENGTH_LONG).show();
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(RecipeActivity.this, "Unexpected Error while deleting the recipe", Toast.LENGTH_LONG).show();
                                     error.printStackTrace();
                                 }
@@ -146,6 +159,7 @@ public class RecipeActivity extends AppCompatActivity {
                         params.put("Authorization", "Bearer " + ACCESS_TOKEN);
                         return params;
                     }
+
                     //Override parseNetworkResponse because response of the JsonObjectRequest is empty.
                     @Override
                     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
@@ -165,5 +179,86 @@ public class RecipeActivity extends AppCompatActivity {
                 queue.add(getRequest);
             }
         });
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId +"/toggle-publicity";
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                if (isChecked) {
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(RecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(RecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                            params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                            return params;
+                        }
+                    };
+                    queue.add(jsObjRequest);
+                    // if toggle button is enabled/on
+                    copyUrl.setVisibility(View.VISIBLE);
+
+                    // Make a toast to display toggle button status
+                    Toast.makeText(getApplicationContext(),
+                            "Recipe is public", Toast.LENGTH_SHORT).show();
+                } else {
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(RecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(RecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                            params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                            return params;
+                        }
+                    };
+                    queue.add(jsObjRequest);
+                    // If toggle button is disabled/off
+                    copyUrl.setVisibility(View.GONE);
+
+                    // Make a toast to display toggle button status
+                    Toast.makeText(getApplicationContext(),
+                            "Recipe is private", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        copyUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),
+                        "URL copied", Toast.LENGTH_SHORT).show();
+                String url ="https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId;
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("copied",url);
+                clipboard.setPrimaryClip(clip);
+            }
+        });
+
+
     }
 }
