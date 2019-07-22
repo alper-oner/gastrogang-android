@@ -3,6 +3,7 @@ package com.example.gastrogang;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,7 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayList<String> recipeDetailsList = new ArrayList<>();
     private ArrayList<ArrayList<String>> recipeIngredientsListList = new ArrayList<>();
     private ArrayList<ArrayList<String>> recipeStepsListList = new ArrayList<>();
+    private ArrayList<ArrayList<String>> recipeTagsListList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
     private ArrayAdapter adapter;
 
@@ -40,6 +42,11 @@ public class ViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+
+        Toolbar actionbarLogin = findViewById(R.id.actionbarLogin);
+        setSupportActionBar(actionbarLogin);
+        getSupportActionBar().setTitle("GASTROGANG");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ACCESS_TOKEN = getIntent().getStringExtra("token");
 
@@ -88,6 +95,7 @@ public class ViewActivity extends AppCompatActivity {
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");
                                 String recipeDetails = jsonObject.getString("details");
+                                JSONArray recipeTags = jsonObject.getJSONArray("tags");
 
                                 recipeIdsList.add(recipeId);
                                 recipeNamesList.add(recipeName);
@@ -105,6 +113,12 @@ public class ViewActivity extends AppCompatActivity {
                                 recipeIngredientsListList.add(recipeIngredientsList);
 
                                 recipeDetailsList.add(recipeDetails);
+
+                                ArrayList<String> recipeTagsList = new ArrayList<>();
+                                for (int j = 0; j < recipeTags.length(); j++) {
+                                    recipeTagsList.add(recipeTags.get(j).toString());
+                                }
+                                recipeTagsListList.add(recipeTagsList);
 
                                 initRecipeListView();
                             }
@@ -150,8 +164,10 @@ public class ViewActivity extends AppCompatActivity {
             recipeIntent.putExtra("steps", recipeStepsListList.get(i));
             recipeIntent.putExtra("ingredients", recipeIngredientsListList.get(i));
             recipeIntent.putExtra("details", recipeDetailsList.get(i));
+            recipeIntent.putExtra("tags", recipeTagsListList.get(i));
             recipeIntent.putExtra("token", ACCESS_TOKEN);
             startActivity(recipeIntent);
+            finish();
         }
 
         });

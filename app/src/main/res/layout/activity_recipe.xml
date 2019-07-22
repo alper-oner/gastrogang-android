@@ -13,12 +13,15 @@
         tools:context=".RecipeActivity" >
 
 
+        <include layout="@layout/actionbar_app"
+            android:id="@+id/actionbarLogin" />
 
         <Button
             android:id="@+id/btnEditRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit Recipe"
+            android:layout_below="@+id/actionbarLogin"
             android:background="@android:color/holo_blue_dark"
             android:textColor="@android:color/white"
             />
@@ -112,10 +115,25 @@
 
         <com.example.gastrogang.NonScrollListView
 
-        android:id="@+id/rcpSteplist"
+            android:id="@+id/rcpSteplist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtrcp4" />
+
+        <TextView
+            android:id="@+id/txtrcp5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rcpSteplist"
+            android:text="Tags:"
+            android:textSize="25sp" />
+
+        <com.example.gastrogang.NonScrollListView
+
+            android:id="@+id/rcpTagList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcp5" />
 
     </RelativeLayout>
 

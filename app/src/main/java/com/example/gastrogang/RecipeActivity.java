@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -41,14 +42,28 @@ public class RecipeActivity extends AppCompatActivity {
     private String recipeId = "";
     private String recipeName = "";
     private String recipeDetails = "";
-    private ArrayList<String> recipeIngredientsList = null;
-    private ArrayList<String> recipeStepsList = null;
+    private ArrayList<String> recipeIngredientsList = new ArrayList<>();
+    private ArrayList<String> recipeStepsList = new ArrayList<>();
+    private ArrayList<String> recipeTagsList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        Toolbar actionbarLogin = findViewById(R.id.actionbarLogin);
+        setSupportActionBar(actionbarLogin);
+        getSupportActionBar().setTitle("RECIPE");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recipeIntent = new Intent(RecipeActivity.this, ViewActivity.class);
+                recipeIntent.putExtra("token", getIntent().getStringExtra("token"));
+                startActivity(recipeIntent);
+                finish();}
+        });
 
         TextView txtviewRecipeName = findViewById(R.id.txtrcpRecipeName);
         TextView txtviewRecipeDetails = findViewById(R.id.txtrcpRecipeDetails);
@@ -61,8 +76,11 @@ public class RecipeActivity extends AppCompatActivity {
             recipeDetails = extras.getString("details");
             recipeIngredientsList = extras.getStringArrayList("ingredients");
             recipeStepsList = extras.getStringArrayList("steps");
-        } else {
-            Toast.makeText(RecipeActivity.this, "Unexpected Error", Toast.LENGTH_LONG).show();
+            recipeTagsList = extras.getStringArrayList("tags");
+        }
+        else {
+            Toast.makeText(RecipeActivity.this, "Unexpected Error" , Toast.LENGTH_LONG).show();
+
         }
         txtviewRecipeName.setText(recipeName);
         txtviewRecipeDetails.setText(recipeDetails);
@@ -76,6 +94,11 @@ public class RecipeActivity extends AppCompatActivity {
         ArrayAdapter<String> stepsAdapter = new ArrayAdapter<String>
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeStepsList);
         lvSteps.setAdapter(stepsAdapter);
+
+        ListView lvTags = findViewById(R.id.rcpTagList);
+        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>
+                (getApplicationContext(), android.R.layout.simple_list_item_1, recipeTagsList);
+        lvTags.setAdapter(tagsAdapter);
 
         Button editRecipe = findViewById(R.id.btnEditRecipe);
 
@@ -95,6 +118,7 @@ public class RecipeActivity extends AppCompatActivity {
                 recipeIntent.putExtra("ingredients", recipeIngredientsList);
                 recipeIntent.putExtra("details", recipeDetails);
                 recipeIntent.putExtra("token", ACCESS_TOKEN);
+                recipeIntent.putExtra("tags", recipeTagsList);
                 startActivity(recipeIntent);
             }
         });

@@ -6,6 +6,9 @@
     android:orientation="vertical"
     tools:context=".ViewActivity" >
 
+    <include layout="@layout/actionbar_app"
+        android:id="@+id/actionbarLogin" />
+
     <TextView
         android:id="@+id/txtAppName"
         android:layout_width="wrap_content"

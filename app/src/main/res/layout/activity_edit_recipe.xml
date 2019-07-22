@@ -12,30 +12,25 @@
         android:layout_height="wrap_content"
         tools:context=".EditRecipeActivity">
 
+        <include layout="@layout/actionbar_app"
+            android:id="@+id/actionbarLogin" />
 
-        <TextView
-            android:id="@+id/editTextEditRecipe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:text="EDIT RECIPE"
-            android:textSize="20sp" />
 
         <Button
             android:id="@+id/editBtnUpdate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/editTextEditRecipe"
+            android:layout_alignBaseline="@id/actionbarLogin"
             android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/editTextEditRecipe"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/actionbarLogin"
             android:text="Update" />
 
         <TextView
             android:id="@+id/editTextRecipeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextEditRecipe"
+            android:layout_below="@+id/editBtnUpdate"
             android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             android:text="Recipe Name: "
@@ -142,6 +137,41 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_below="@+id/editTextStep"
+            android:layout_marginStart="15dp" />
+
+        <TextView
+            android:id="@+id/editTextTagHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editListSteps"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:text="Tags:"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextTag"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextTagHeader"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:hint="Tag" />
+
+        <Button
+            android:id="@+id/editBtAddTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/editTextTag"
+            android:layout_marginLeft="30dp"
+            android:layout_toEndOf="@+id/editTextTag"
+            android:text="Add" />
+
+        <com.example.gastrogang.NonScrollListView
+            android:id="@+id/editListTags"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_below="@+id/editBtAddTags"
             android:layout_marginStart="15dp" />
 
 
