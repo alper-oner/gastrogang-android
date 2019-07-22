@@ -1,5 +1,8 @@
 package com.example.gastrogang;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -156,12 +159,10 @@ public class RecipeActivity extends AppCompatActivity {
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId +"/toggle-publicity";
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 if (isChecked) {
-                    // TODO public/private post at
-                    String url = " https://webhook.site/ab98b14e-a11c-4b76-a53e-fe2c20f163ab ";
-                    JSONObject obj = new JSONObject();
-                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, null,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
@@ -183,8 +184,6 @@ public class RecipeActivity extends AppCompatActivity {
                         }
                     };
                     queue.add(jsObjRequest);
-
-
                     // if toggle button is enabled/on
                     copyUrl.setVisibility(View.VISIBLE);
 
@@ -192,11 +191,7 @@ public class RecipeActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Recipe is public", Toast.LENGTH_SHORT).show();
                 } else {
-                    // TODO public/private post at
-                    String url = "https://webhook.site/ab98b14e-a11c-4b76-a53e-fe2c20f163ab ";
-                    JSONObject obj = new JSONObject();
-                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, null,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
@@ -233,37 +228,10 @@ public class RecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),
                         "URL copied", Toast.LENGTH_SHORT).show();
-                // TODO get URL
-                String url = "https://api.myjson.com/bins/wf259";
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    String copiedUrl = response.getString("url");
-                                    Toast.makeText(getApplicationContext(),
-                                            "URL: " + copiedUrl, Toast.LENGTH_SHORT).show();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(RecipeActivity.this, "Error while getting URL" + error, Toast.LENGTH_LONG).show();
-                                error.printStackTrace();
-                            }
-                        }) {
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
-                        return params;
-                    }
-                };
-                queue.add(getRequest);
+                String url ="https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId;
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("copied",url);
+                clipboard.setPrimaryClip(clip);
             }
         });
 
