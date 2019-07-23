@@ -10,59 +10,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".RecipeActivity" >
+        tools:context=".PublicRecipeActivity" >
 
 
         <include layout="@layout/actionbar_app"
             android:id="@+id/actionbarLogin" />
 
-        <Button
-            android:id="@+id/btnEditRecipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit Recipe"
+
+        <com.jackandphantom.androidlikebutton.AndroidLikeButton
+            android:id="@+id/likeBtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_below="@+id/actionbarLogin"
-            android:background="@android:color/holo_blue_dark"
-            android:textColor="@android:color/white"
-            />
-
-        <Button
-            android:id="@+id/btnDeleteRecipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Recipe"
-            android:layout_below="@+id/btnEditRecipe"
-            android:background="@android:color/holo_red_dark"
-            android:textColor="@android:color/white"
-            />
-
-        <ToggleButton
-            android:id="@+id/toggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnDeleteRecipe"
-            android:checked="false"
             android:layout_centerHorizontal="true"
-            android:textOff="Private"
-            android:textOn="Public"
-            android:textColor="#f00"/>
-
-        <Button
-            android:id="@+id/copyUrlButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Copy URL"
-            android:layout_toRightOf="@+id/toggleButton"
-            android:layout_alignBaseline="@+id/toggleButton"
-            android:background="@android:color/holo_blue_dark"
-            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
+            app:like_icon="@drawable/ic_star_rate_on"
+            app:unlike_icon="@drawable/ic_star_rate_off"
+            app:circle_startColor="#fcd229"
+            app:circle_endColor="#f4ac1b"
+            app:dot_color_1="#f5ce31"
+            app:dot_color_2="#ed8128"
+            app:liked="false"
             />
 
         <TextView
             android:id="@+id/txtrcp0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toggleButton"
+            android:layout_below="@+id/likeBtn"
             android:text="Number of Likes: "
             android:textSize="25sp" />
 
@@ -78,7 +53,7 @@
             android:id="@+id/txtrcp1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtrcp0"
+            android:layout_below="@+id/txtrcpLikeCount"
             android:text="Recipe Name: "
             android:textSize="25sp" />
 
@@ -116,7 +91,7 @@
 
         <com.example.gastrogang.NonScrollListView
 
-        android:id="@+id/rcpIngredientList"
+            android:id="@+id/rcpIngredientList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtrcp3" />
@@ -150,13 +125,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtrcp5" />
-
-        <ImageView
-            android:id="@+id/capturedImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/rcpTagList" />
 
     </RelativeLayout>
 

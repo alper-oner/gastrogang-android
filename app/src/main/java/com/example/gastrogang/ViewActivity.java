@@ -38,6 +38,7 @@ public class ViewActivity extends AppCompatActivity {
     private ArrayList<ArrayList<String>> recipeTagsListList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
     private ArrayAdapter adapter;
+    private ArrayList<Integer> recipeLikeCountList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ViewActivity extends AppCompatActivity {
                                     JSONArray recipeTags = response.getJSONArray("tags");
                                     String recipeDetails = response.getString("details");
 
-                                    Intent recipeIntent = new Intent(ViewActivity.this, RecipeActivity.class);
+                                    Intent recipeIntent = new Intent(ViewActivity.this, PublicRecipeActivity.class);
                                     recipeIntent.putExtra("id", recipeId);
                                     recipeIntent.putExtra("name", recipeName);
 
@@ -101,8 +102,12 @@ public class ViewActivity extends AppCompatActivity {
 
                                     recipeIntent.putExtra("details", recipeDetails);
                                     recipeIntent.putExtra("token", ACCESS_TOKEN);
-                                    // TODO doğru activity'e yönlendir
-                                    // startActivity(recipeIntent);
+
+                                    JSONObject likeJsonObject = response.getJSONObject("like");
+                                    int recipeLikeCount = likeJsonObject.getInt("count");
+                                    recipeIntent.putExtra("likes", recipeLikeCount);
+
+                                    startActivity(recipeIntent);
 
 
                                 } catch (JSONException e) {
@@ -157,12 +162,16 @@ public class ViewActivity extends AppCompatActivity {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
 
-                                String recipeId = jsonObject.getString("ID");
+                                String recipeId = jsonObject.getString("ID");;
                                 String recipeName = jsonObject.getString("name");
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");
                                 String recipeDetails = jsonObject.getString("details");
                                 JSONArray recipeTags = jsonObject.getJSONArray("tags");
+                                JSONObject likeJsonObject = jsonObject.getJSONObject("like");
+                                int recipeLikeCount = likeJsonObject.getInt("count");
+
+                                recipeLikeCountList.add(recipeLikeCount);
 
                                 recipeIdsList.add(recipeId);
                                 recipeNamesList.add(recipeName);
@@ -231,6 +240,7 @@ public class ViewActivity extends AppCompatActivity {
                 recipeIntent.putExtra("details", recipeDetailsList.get(i));
                 recipeIntent.putExtra("tags", recipeTagsListList.get(i));
                 recipeIntent.putExtra("token", ACCESS_TOKEN);
+                recipeIntent.putExtra("likes", recipeLikeCountList.get(i));
                 startActivity(recipeIntent);
                 finish();
             }
