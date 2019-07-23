@@ -76,7 +76,7 @@ public class ViewActivity extends AppCompatActivity {
                                     JSONArray recipeTags = response.getJSONArray("tags");
                                     String recipeDetails = response.getString("details");
 
-                                    Intent recipeIntent = new Intent(ViewActivity.this, RecipeActivity.class);
+                                    Intent recipeIntent = new Intent(ViewActivity.this, PublicRecipeActivity.class);
                                     recipeIntent.putExtra("id", recipeId);
                                     recipeIntent.putExtra("name", recipeName);
 
@@ -101,8 +101,7 @@ public class ViewActivity extends AppCompatActivity {
 
                                     recipeIntent.putExtra("details", recipeDetails);
                                     recipeIntent.putExtra("token", ACCESS_TOKEN);
-                                    // TODO doğru activity'e yönlendir
-                                    // startActivity(recipeIntent);
+                                    startActivity(recipeIntent);
 
 
                                 } catch (JSONException e) {
@@ -158,6 +157,7 @@ public class ViewActivity extends AppCompatActivity {
                                 JSONObject jsonObject = response.getJSONObject(i);
 
                                 String recipeId = jsonObject.getString("ID");
+                                System.out.println(recipeId);
                                 String recipeName = jsonObject.getString("name");
                                 JSONArray recipeSteps = jsonObject.getJSONArray("steps");
                                 JSONArray recipeIngredients = jsonObject.getJSONArray("ingredients");
