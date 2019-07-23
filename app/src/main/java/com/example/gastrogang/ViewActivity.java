@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -61,8 +62,74 @@ public class ViewActivity extends AppCompatActivity {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                String url = query;
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    String recipeId = response.getString("ID");
+                                    String recipeName = response.getString("name");
+                                    JSONArray recipeSteps = response.getJSONArray("steps");
+                                    JSONArray recipeIngredients = response.getJSONArray("ingredients");
+                                    JSONArray recipeTags = response.getJSONArray("tags");
+                                    String recipeDetails = response.getString("details");
+
+                                    Intent recipeIntent = new Intent(ViewActivity.this, RecipeActivity.class);
+                                    recipeIntent.putExtra("id", recipeId);
+                                    recipeIntent.putExtra("name", recipeName);
+
+                                    ArrayList<String> recipeStepsList = new ArrayList<>();
+                                    for (int j = 0; j < recipeSteps.length(); j++) {
+                                        recipeStepsList.add(recipeSteps.get(j).toString());
+                                    }
+                                    recipeIntent.putExtra("steps", recipeStepsList);
+
+                                    ArrayList<String> recipeIngredientsList = new ArrayList<>();
+                                    for (int j = 0; j < recipeIngredients.length(); j++) {
+                                        recipeIngredientsList.add(recipeIngredients.get(j).toString());
+                                    }
+                                    recipeIngredientsListList.add(recipeIngredientsList);
+                                    recipeIntent.putExtra("ingredients", recipeIngredientsList);
+
+                                    ArrayList<String> recipeTagsList = new ArrayList<>();
+                                    for (int j = 0; j < recipeTags.length(); j++) {
+                                        recipeTagsList.add(recipeTags.get(j).toString());
+                                    }
+                                    recipeIntent.putExtra("tags", recipeTagsList);
+
+                                    recipeIntent.putExtra("details", recipeDetails);
+                                    recipeIntent.putExtra("token", ACCESS_TOKEN);
+                                    // TODO doğru activity'e yönlendir
+                                    // startActivity(recipeIntent);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(ViewActivity.this, "Error while getting recipes", Toast.LENGTH_LONG).show();
+                                error.printStackTrace();
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                        return params;
+                    }
+                };
+                queue.add(getRequest);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
@@ -153,22 +220,20 @@ public class ViewActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.recipe_list);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-
-        {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick (AdapterView < ? > adapterView, View view,int i, long l){
-            Intent recipeIntent = new Intent(ViewActivity.this, RecipeActivity.class);
-            recipeIntent.putExtra("id", recipeIdsList.get(i));
-            recipeIntent.putExtra("name", recipeNamesList.get(i));
-            recipeIntent.putExtra("steps", recipeStepsListList.get(i));
-            recipeIntent.putExtra("ingredients", recipeIngredientsListList.get(i));
-            recipeIntent.putExtra("details", recipeDetailsList.get(i));
-            recipeIntent.putExtra("tags", recipeTagsListList.get(i));
-            recipeIntent.putExtra("token", ACCESS_TOKEN);
-            startActivity(recipeIntent);
-            finish();
-        }
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent recipeIntent = new Intent(ViewActivity.this, RecipeActivity.class);
+                recipeIntent.putExtra("id", recipeIdsList.get(i));
+                recipeIntent.putExtra("name", recipeNamesList.get(i));
+                recipeIntent.putExtra("steps", recipeStepsListList.get(i));
+                recipeIntent.putExtra("ingredients", recipeIngredientsListList.get(i));
+                recipeIntent.putExtra("details", recipeDetailsList.get(i));
+                recipeIntent.putExtra("tags", recipeTagsListList.get(i));
+                recipeIntent.putExtra("token", ACCESS_TOKEN);
+                startActivity(recipeIntent);
+                finish();
+            }
 
         });
     }
