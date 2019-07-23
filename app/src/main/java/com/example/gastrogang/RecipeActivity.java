@@ -96,10 +96,9 @@ public class RecipeActivity extends AppCompatActivity {
             recipeIngredientsList = extras.getStringArrayList("ingredients");
             recipeStepsList = extras.getStringArrayList("steps");
             recipeTagsList = extras.getStringArrayList("tags");
+            recipeNumberOfLikes = extras.getInt("likes");
         } else {
             Toast.makeText(RecipeActivity.this, "Unexpected Error", Toast.LENGTH_LONG).show();
-            recipeNumberOfLikes = extras.getInt("likes");
-
         }
 
 
