@@ -137,7 +137,10 @@ public class ViewActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (recipeNamesList.size() >0){
+                    adapter.getFilter().filter(newText);
+                }
+
                 return false;
             }
         });
