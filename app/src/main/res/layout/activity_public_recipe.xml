@@ -34,10 +34,27 @@
             />
 
         <TextView
-            android:id="@+id/txtrcp1"
+            android:id="@+id/txtrcp0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/likeBtn"
+            android:text="Number of Likes: "
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/txtrcpLikeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="25sp"
+            android:layout_alignBaseline="@id/txtrcp0"
+            android:layout_toRightOf="@id/txtrcp0"/>
+
+        <TextView
+            android:id="@+id/txtrcp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtrcpLikeCount"
             android:text="Recipe Name: "
             android:textSize="25sp" />
 

@@ -27,6 +27,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.jackandphantom.androidlikebutton.AndroidLikeButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,7 @@ public class PublicRecipeActivity extends AppCompatActivity {
     private ArrayList<String> recipeStepsList = new ArrayList<>();
     private ArrayList<String> recipeTagsList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
+    private String recipeNumberOfLikes = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,177 @@ public class PublicRecipeActivity extends AppCompatActivity {
                 (getApplicationContext(), android.R.layout.simple_list_item_1, recipeTagsList);
         lvTags.setAdapter(tagsAdapter);
 
+
+        AndroidLikeButton likeBtn = findViewById(R.id.likeBtn);
+        likeBtn.setOnLikeEventListener(new AndroidLikeButton.OnLikeEventListener() {
+            @Override
+            public void onLikeClicked(AndroidLikeButton androidLikeButton) {
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("id", Integer.parseInt(recipeId));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId + "/like";
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Toast.makeText(PublicRecipeActivity.this, "Liked!", Toast.LENGTH_LONG).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse.statusCode == 400) {
+                                    Toast.makeText(PublicRecipeActivity.this, "You have already liked this recipe", Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(PublicRecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                        return params;
+                    }
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                            JSONObject result = null;
+                            if (jsonString.length() > 0)
+                                result = new JSONObject(jsonString);
+                            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException je) {
+                            return Response.error(new ParseError(je));
+                        }
+                    }
+                };
+                queue.add(jsObjRequest);
+
+            }
+
+
+            @Override
+            public void onUnlikeClicked(AndroidLikeButton androidLikeButton) {
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("id", Integer.parseInt(recipeId));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId + "/dislike";
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Toast.makeText(PublicRecipeActivity.this, "Disliked!", Toast.LENGTH_LONG).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse.statusCode == 400) {
+                                    Toast.makeText(PublicRecipeActivity.this, "You have not liked this recipe before", Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(PublicRecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                        return params;
+                    }
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                            JSONObject result = null;
+                            if (jsonString.length() > 0)
+                                result = new JSONObject(jsonString);
+                            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException je) {
+                            return Response.error(new ParseError(je));
+                        }
+                    }
+                };
+                queue.add(jsObjRequest);
+            }
+        });
+        /*
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("id", recipeId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes" + recipeId + "/like";
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, obj,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Toast.makeText(PublicRecipeActivity.this, "Successful: " + response.toString(), Toast.LENGTH_SHORT).show();
+                                Intent viewIntent = new Intent(PublicRecipeActivity.this, ViewActivity.class);
+                                String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                                viewIntent.putExtra("token", ACCESS_TOKEN);
+                                startActivity(viewIntent);
+                                finish();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse.statusCode == 400) {
+                                    Toast.makeText(PublicRecipeActivity.this, "You have already liked this recipe", Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(PublicRecipeActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        String ACCESS_TOKEN = getIntent().getStringExtra("token");
+                        params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                        return params;
+                    }
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                            JSONObject result = null;
+                            if (jsonString.length() > 0)
+                                result = new JSONObject(jsonString);
+                            return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
+                        } catch (UnsupportedEncodingException e) {
+                            return Response.error(new ParseError(e));
+                        } catch (JSONException je) {
+                            return Response.error(new ParseError(je));
+                        }
+                    }
+                };
+                queue.add(jsObjRequest);
+
+            }
+        });
+*/
 
 
     }
