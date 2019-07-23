@@ -34,15 +34,28 @@
         android:layout_marginTop="12dp"
         android:layout_below="@+id/txtUsernameRegister" />
 
+    <EditText
+        android:inputType="text"
+        android:id="@+id/txtLifetime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:padding="8dp"
+        android:background="#fff"
+        android:hint="Lifetime of recipes in days"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/txtPasswordRegister" />
+
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:textColor="#00CC99"
-        android:layout_below="@+id/txtPasswordRegister"
+        android:layout_below="@+id/txtLifetime"
         android:layout_marginTop="17dp"
-        android:layout_alignStart="@+id/txtPasswordRegister"
-        android:layout_alignEnd="@+id/txtPasswordRegister" />
+        android:layout_alignStart="@+id/txtLifetime"
+        android:layout_alignEnd="@+id/txtLifetime" />
 
 </RelativeLayout>

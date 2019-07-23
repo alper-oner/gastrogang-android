@@ -23,7 +23,7 @@ import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
 
     private Toolbar actionbarRegister;
-    private EditText txtUsername, txtPassword;
+    private EditText txtUsername, txtPassword, txtLifetime;
     private Button btnRegister;
 
     public void init() {
@@ -35,11 +35,13 @@ public class RegisterActivity extends AppCompatActivity {
         txtUsername = (EditText) findViewById(R.id.txtUsernameRegister);
         txtPassword = (EditText) findViewById(R.id.txtPasswordRegister);
         btnRegister = (Button) findViewById(R.id.buttonRegister);
+        txtLifetime = (EditText) findViewById(R.id.txtLifetime);
     }
 
     private void createNewAccount() {
         String username = txtUsername.getText().toString();
         String password = txtPassword.getText().toString();
+        String lifetime = txtLifetime.getText().toString();
 
         if (TextUtils.isEmpty(username)) {
            Toast.makeText(this, "Username cannot be empty!", Toast.LENGTH_LONG).show();
@@ -48,7 +50,11 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Password cannot be empty!", Toast.LENGTH_LONG).show();
         } else if (password.length() < 6) {
             Toast.makeText(this, "Password should be at least 6 chars long!", Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else if (lifetime.equals("")) {
+            Toast.makeText(this, "Lifetime cannot be empty!", Toast.LENGTH_LONG).show();
+        }
+        else {
             String url = "https://gastrogang.herokuapp.com/api/v1/register";
             JSONObject obj = new JSONObject();
             try {
@@ -58,6 +64,11 @@ public class RegisterActivity extends AppCompatActivity {
             }
             try {
                 obj.put("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                obj.put("lifetime", Integer.parseInt(lifetime));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
