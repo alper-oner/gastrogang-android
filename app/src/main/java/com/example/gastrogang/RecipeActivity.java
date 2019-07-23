@@ -4,13 +4,18 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +37,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +55,10 @@ public class RecipeActivity extends AppCompatActivity {
     private ArrayList<String> recipeStepsList = new ArrayList<>();
     private ArrayList<String> recipeTagsList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
+    private ImageView imgCapture;
+    private static final int Image_Capture_Code = 1;
+    String encodedImage;
+    String imgBase64;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +75,13 @@ public class RecipeActivity extends AppCompatActivity {
                 Intent recipeIntent = new Intent(RecipeActivity.this, ViewActivity.class);
                 recipeIntent.putExtra("token", getIntent().getStringExtra("token"));
                 startActivity(recipeIntent);
-                finish();}
+                finish();
+            }
         });
 
         TextView txtviewRecipeName = findViewById(R.id.txtrcpRecipeName);
         TextView txtviewRecipeDetails = findViewById(R.id.txtrcpRecipeDetails);
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -77,11 +92,52 @@ public class RecipeActivity extends AppCompatActivity {
             recipeIngredientsList = extras.getStringArrayList("ingredients");
             recipeStepsList = extras.getStringArrayList("steps");
             recipeTagsList = extras.getStringArrayList("tags");
+        } else {
+            Toast.makeText(RecipeActivity.this, "Unexpected Error", Toast.LENGTH_LONG).show();
         }
-        else {
-            Toast.makeText(RecipeActivity.this, "Unexpected Error" , Toast.LENGTH_LONG).show();
 
-        }
+
+        imgCapture = (ImageView) findViewById(R.id.capturedImage);
+        String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId + "/photo";
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                imgBase64 = jsonObject.getString("img");
+                                byte[] decodedString = Base64.decode(imgBase64, Base64.DEFAULT);
+                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                imgCapture.setImageBitmap(decodedByte);
+                                break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("onErrorResponse", error.toString());
+                        Toast.makeText(RecipeActivity.this, "Error while getting photos", Toast.LENGTH_LONG).show();
+                        error.printStackTrace();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + ACCESS_TOKEN);
+                return params;
+            }
+        };
+        queue.add(getRequest);
+
+
         txtviewRecipeName.setText(recipeName);
         txtviewRecipeDetails.setText(recipeDetails);
 
@@ -183,7 +239,7 @@ public class RecipeActivity extends AppCompatActivity {
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId +"/toggle-publicity";
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId + "/toggle-publicity";
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 if (isChecked) {
                     JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, null,
@@ -252,9 +308,9 @@ public class RecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),
                         "URL copied", Toast.LENGTH_SHORT).show();
-                String url ="https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId;
+                String url = "https://gastrogang.herokuapp.com/api/v1/recipes/" + recipeId;
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("copied",url);
+                ClipData clip = ClipData.newPlainText("copied", url);
                 clipboard.setPrimaryClip(clip);
             }
         });
