@@ -46,6 +46,7 @@ public class RecipeActivity extends AppCompatActivity {
     private ArrayList<String> recipeStepsList = new ArrayList<>();
     private ArrayList<String> recipeTagsList = new ArrayList<>();
     private String ACCESS_TOKEN = "";
+    private Integer recipeNumberOfLikes = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         TextView txtviewRecipeName = findViewById(R.id.txtrcpRecipeName);
         TextView txtviewRecipeDetails = findViewById(R.id.txtrcpRecipeDetails);
+        TextView txtviewNumberOfLikes = findViewById(R.id.txtrcpLikeCount);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -77,6 +79,7 @@ public class RecipeActivity extends AppCompatActivity {
             recipeIngredientsList = extras.getStringArrayList("ingredients");
             recipeStepsList = extras.getStringArrayList("steps");
             recipeTagsList = extras.getStringArrayList("tags");
+            recipeNumberOfLikes = extras.getInt("likes");
         }
         else {
             Toast.makeText(RecipeActivity.this, "Unexpected Error" , Toast.LENGTH_LONG).show();
@@ -84,6 +87,7 @@ public class RecipeActivity extends AppCompatActivity {
         }
         txtviewRecipeName.setText(recipeName);
         txtviewRecipeDetails.setText(recipeDetails);
+        txtviewNumberOfLikes.setText(recipeNumberOfLikes.toString());
 
         ListView lvIngredients = findViewById(R.id.rcpIngredientList);
         ArrayAdapter<String> ingredientsAdapter = new ArrayAdapter<String>
